@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="UnattendedHostPersistenceState">
+    <option name="openedFilesInfos">
+      <list>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="755" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/templates/tool/index.html.twig" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="289" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Controller/ToolController.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="465" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/.env" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1776" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Repository/UserRepository.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="871" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Security/SecurityAuthenticator.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="551" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/packages/security.yaml" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="267" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Controller/SecurityController.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="346" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Entity/User.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1121" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/templates/security/login.html.twig" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="282" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Command/PingToolCommand.php" />
+        </OpenedFileInfo>
+      </list>
+    </option>
+  </component>
+</project>

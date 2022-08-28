@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\StatusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Repository\StatusRepository;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @ORM\Entity(repositoryClass=StatusRepository::class)
@@ -30,7 +31,7 @@ class Status
     private $deleted;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $service;
 
@@ -73,12 +74,12 @@ class Status
         return $this;
     }
 
-    public function isService(): ?bool
+    public function isService(): ?boolean
     {
         return $this->service;
     }
 
-    public function setService(bool $service): self
+    public function setService(boolean $service): self
     {
         $this->service = $service;
 

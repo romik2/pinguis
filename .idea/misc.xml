@@ -36,8 +36,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/src/Entity/User.php" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
+          <option name="caretOffset" value="1121" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/templates/security/login.html.twig" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="282" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/src/Command/PingToolCommand.php" />
         </OpenedFileInfo>
       </list>
     </option>

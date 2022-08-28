@@ -20,12 +20,12 @@ class ToolStatus
     /**
      * @ORM\ManyToOne(targetEntity=Tool::class, inversedBy="toolStatuses")
      */
-    private $toolId;
+    private $tool;
 
     /**
      * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="toolStatuses")
      */
-    private $statusId;
+    private $status;
 
     /**
      * @ORM\Column(type="datetime")
@@ -42,27 +42,39 @@ class ToolStatus
         return $this->id;
     }
 
-    public function getToolId(): ?Tool
+    /**
+     * @return Tool
+     */
+    public function getTool(): Tool
     {
-        return $this->toolId;
+        return $this->tool;
     }
 
-    public function setToolId(?Tool $toolId): self
+    /**
+     * @param Tool $tool
+     * @return ToolStatus
+     */
+    public function setTool(Tool $tool): self
     {
-        $this->toolId = $toolId;
-
+        $this->tool = $tool;
         return $this;
     }
 
-    public function getStatusId(): ?Status
+    /**
+     * @return Status
+     */
+    public function getStatus(): Status
     {
-        return $this->statusId;
+        return $this->status;
     }
 
-    public function setStatusId(?Status $statusId): self
+    /**
+     * @param Status $status
+     * @return ToolStatus
+     */
+    public function setStatus(Status $status): self
     {
-        $this->statusId = $statusId;
-
+        $this->status = $status;
         return $this;
     }
 

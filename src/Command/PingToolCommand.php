@@ -61,8 +61,8 @@ class PingToolCommand extends Command
 
         $toolStatus = new ToolStatus();
         $toolStatus
-            ->setToolId($tool)
-            ->setStatusId($status);
+            ->setTool($tool)
+            ->setStatus($status);
 
         return $toolStatus;
     }

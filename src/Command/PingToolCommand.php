@@ -55,7 +55,7 @@ class PingToolCommand extends Command
         return Command::SUCCESS;
     }
 
-    public function buildToolStatus(Tool $tool, bool $pingStatus = false)
+    public function buildToolStatus(Tool $tool, bool $pingStatus = false): ToolStatus
     {
         $status = $this->managerRegistry->getRepository(Status::class)->findOneBy(['service' => $pingStatus]);
 

@@ -1,0 +1,15 @@
+{% macro inputs() %}
+    {% import 'fields/text.html.twig' as fieldText %}
+
+    <div class="row form-group">
+        <div class="col-12">
+            {{ fieldText.text('tool[name]', 'Name', { required: true }) }}
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-12">
+            {{ fieldText.text('tool[address]', 'Address', { required: true }) }}
+        </div>
+    </div>
+{% endmacro %}

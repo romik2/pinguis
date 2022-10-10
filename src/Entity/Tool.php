@@ -30,7 +30,7 @@ class Tool
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=ToolStatus::class, mappedBy="toolId")
+     * @ORM\OneToMany(targetEntity=ToolStatus::class, mappedBy="tool")
      */
     private $toolStatuses;
 
@@ -96,5 +96,11 @@ class Tool
         }
 
         return $this;
+    }
+
+
+    public function getToolStatusesLimit(int $limit): array
+    {
+        return array_slice($this->toolStatuses->toArray(), $limit);
     }
 }

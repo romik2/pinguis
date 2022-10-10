@@ -16,7 +16,7 @@ use App\Entity\Tool;
 class ToolController extends AbstractController
 {
     /**
-     * @Route("/", name="dashboard_tool")
+     * @Route("/", name="dashboard_tool", methods={"GET"})
      */
     public function listTool(): Response
     {
@@ -27,32 +27,31 @@ class ToolController extends AbstractController
     }
 
     /**
-     * @Route("/details/{id}", name="details")
+     * @Route("/details", name="details_tool", methods={"GET"})
      */
     public function details(Request $request): Response
     {
         $tool = $this->getDoctrine()->getRepository(Tool::class)->find($request->get('id'));
         return new JsonResponse([
-            'content' => $this->render('tool/index.html.twig', ['tools' => []])->getContent(),
+            'content' => $this->render('tool/details.html.twig', ['tool' => $tool])->getContent(),
         ]);
     }
 
     /**
-     * @Route("/add", name="add")
+     * @Route("/add", name="add_tool", methods={"POST"})
      */
     public function addTool(Request $request): Response
     {
-        // $toolDetails = $request->get('tool');
+        $toolDetails = $request->get('tool');
         $tool = new Tool();
-        // $tool->setAddress($toolDetails['address'])->setName($toolDetails['name']);
-        $tool->setAddress('192.168.1.1')->setName('router');
+        $tool->setAddress($toolDetails['address'])->setName($toolDetails['name']);
         $this->getDoctrine()->getManager()->persist($tool);
         $this->getDoctrine()->getManager()->flush();
         return $this->redirect($request->headers->get('referer'));
     }
 
     /**
-     * @Route("/edit/{id}", name="edit")
+     * @Route("/edit/{id}", name="edit_tool", methods={"POST"})
      */
     public function editTool(Request $request, Tool $tool): Response
     {

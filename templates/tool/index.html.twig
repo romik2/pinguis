@@ -15,7 +15,8 @@
 {% endset %}
 
 {% block body %}
-<div class="col-12">
+<div class="row">
+<div class="col-12" id="listTool">
     <div class="app-card app-card-stats-table h-100 shadow-sm">
         <div class="app-card-header p-3">
             <div class="row justify-content-between align-items-center">
@@ -24,7 +25,7 @@
                 </div>
                   <div class="col-auto">
                         <div class="card-header-action">
-                            <button type="button" href="#" class="btn btn-primary" data-toggle="modal" data-target="#toolForm">{{ 'Add tool' | trans }}</button>
+                            <button type="button" href="#" class="btn add-tool btn-primary" data-action="{{ path('add_tool') }}" data-toggle="modal" data-target="#toolForm">{{ 'Add tool' | trans }}</button>
                         </div>
                     </div>
             </div>
@@ -42,9 +43,9 @@
                     <tbody>
                         {% for tool in tools %}
                             <tr>
-                                <td><a href="#">{{ tool.name }}</a></td>
+                                <td><a class="details-view" data-id={{tool.id}}>{{ tool.name }}</a></td>
                                 <td class="stat-cell">
-                                {% for statusTool in tool.getToolStatusesLimit(1) %}
+                                {% for statusTool in tool.getToolStatusesLimit(10) %}
                                     <div class="beat-mobile" style="background: {{ statusTool.status.color }}"></div>
                                 {% endfor %}
                                 </td>
@@ -57,6 +58,46 @@
         </div>
     </div>
 </div>
+<div class="col-8" id="loaderDetails" hidden>
+   <center><div class="lds-dual-ring"></div></center>
+</div>
+<div class="col-8" id="detailsTool" hidden>
+   
+</div>
+</div>
+
+<script>
+    $(function() {
+        let idTool;
+
+        $(".details-view").click(function() {
+            $("#listTool").removeClass('col-12').addClass('col-4');
+            $("#detailsTool").attr('hidden', true);
+            $("#loaderDetails").removeAttr('hidden');
+            idTool = $(this).data('id');
+            getDetailsTool(idTool);
+        });
+
+        setInterval( function () {
+            if (idTool) {
+                getDetailsTool(idTool);
+            }
+        }, 10000 );
+
+    });
+
+    function getDetailsTool(id) {
+        $.ajax({
+            url: '{{ path('details_tool') }}',
+            data: {id},
+            success: function (data) {
+                $("#detailsTool").html(data.content);
+                $("#detailsTool").removeAttr('hidden');
+                $("#loaderDetails").attr('hidden', true);
+            }
+        });
+    }
+</script>
 {% endblock %}
 
 {% block modal %}

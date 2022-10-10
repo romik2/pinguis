@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
-    <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
-    <script defer src="{{ asset('plugins/fontawesome/js/all.min.js') }}"></script>
+    <meta name="description" content="Мониторинг оборудованияя">
+    <meta name="author" content="Romtuck">
     {% block stylesheets %}
         <link id="theme-style" rel="stylesheet" href="{{ asset('css/portal.css') }}">
+        <link id="theme-style" rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.css') }}">
     {% endblock %}
 
 </head>
@@ -28,7 +28,7 @@
                         <div class="app-utility-item app-user-dropdown dropdown">
                             <a class="dropdown-toggle" id="user-dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="{{ asset('images/user.png') }}" alt="user profile"></a>
                             <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-                                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Log Out</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_logout') }}">{{ "Log Out" | trans }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -45,13 +45,14 @@
         </div>
     </div>
 
+{% block modal %}{% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('plugins/popper.min.js') }}"></script>
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('plugins/chart.js/chart.min.js') }}"></script>
-    <script src="{{ asset('js/index-charts.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    {# <script src="{{ asset('js/index-charts.js') }}"></script> #}
+    {# <script src="{{ asset('js/app.js') }}"></script> #}
 {% endblock %}
 </body>
 </html>

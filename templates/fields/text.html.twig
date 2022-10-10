@@ -1,0 +1,46 @@
+{% macro text(name, title, options) %}
+    
+    {{ _self.label(title, options) }}
+    <input type="{{ options.type ?? 'text' }}"
+        {{ _self.attributes(name, title, options) }}
+    />
+
+{% endmacro text %}
+
+{% macro label(title, options, class = null) %}
+    {% set required = options.required is defined and options.required == true %}
+    {% set hidden = options.hidden is defined and options.hidden == true %}
+
+    <label class="form-label form-label-title {{ class is not empty ? class ~ '-label' : '' }}" {{ hidden ? 'hidden' }}>
+        {{ title | trans | capitalize | raw }}
+        {% if required %}<span class="text-danger" {{ hidden ? 'hidden' }}>*</span>{% endif %}
+    </label>
+{% endmacro %}
+
+{% macro attributes(name, title, options, class = '') %}
+    {% set isRequired = options.required is defined and options.required == true %}
+    {% set isReadonly = options.readonly is defined and options.readonly == true %}
+    {% set isDisabled = options.disabled is defined and options.disabled == true %}
+    {% set isHidden = options.hidden is defined and options.hidden == true %}
+    {% set pattern = options.pattern is defined ? 'pattern=' ~ options.pattern %}
+
+    class="form-control {{ options.class ?? '' }} {{ class }}"
+    name="{{ name }}"
+    value="{{ options.value ?? '' }}"
+    placeholder="{{ (options.placeholder ?? title) | trans | capitalize }}"
+    {{ isRequired ? 'required' }}
+    {{ isReadonly ? 'readonly' }}
+    {{ isDisabled ? 'disabled' }}
+    {{ isHidden ? 'hidden' }}
+    {{ pattern }}
+    
+    {% if options.defaultValue is defined %}
+        data-default-value="{{options.defaultValue}}"
+    {% endif %}
+
+    {% if options.dataAttrs is defined and options.dataAttrs is not empty %}
+        {% for key, value in options.dataAttrs %}
+            data-{{ key }}="{{ value }}"
+        {% endfor %}
+    {% endif %}
+{% endmacro %}

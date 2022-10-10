@@ -36,9 +36,14 @@ class Status
     private $service;
 
     /**
-     * @ORM\OneToMany(targetEntity=ToolStatus::class, mappedBy="statusId")
+     * @ORM\OneToMany(targetEntity=ToolStatus::class, mappedBy="status")
      */
     private $toolStatuses;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $color;
 
     public function __construct()
     {
@@ -112,6 +117,18 @@ class Status
                 $toolStatus->setStatusId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): self
+    {
+        $this->color = $color;
 
         return $this;
     }

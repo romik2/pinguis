@@ -27,7 +27,7 @@ class ToolController extends AbstractController
     }
 
     /**
-     * @Route("/details/{id}", name="details")
+     * @Route("/details/{id}", name="details_tool")
      */
     public function details(Request $request): Response
     {
@@ -38,21 +38,20 @@ class ToolController extends AbstractController
     }
 
     /**
-     * @Route("/add", name="add")
+     * @Route("/add", name="add_tool")
      */
     public function addTool(Request $request): Response
     {
-        // $toolDetails = $request->get('tool');
+        $toolDetails = $request->get('tool');
         $tool = new Tool();
-        // $tool->setAddress($toolDetails['address'])->setName($toolDetails['name']);
-        $tool->setAddress('192.168.1.1')->setName('router');
+        $tool->setAddress($toolDetails['address'])->setName($toolDetails['name']);
         $this->getDoctrine()->getManager()->persist($tool);
         $this->getDoctrine()->getManager()->flush();
         return $this->redirect($request->headers->get('referer'));
     }
 
     /**
-     * @Route("/edit/{id}", name="edit")
+     * @Route("/edit/{id}", name="edit_tool")
      */
     public function editTool(Request $request, Tool $tool): Response
     {

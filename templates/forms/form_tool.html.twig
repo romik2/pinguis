@@ -12,4 +12,14 @@
             {{ fieldText.text('tool[address]', 'Address', { required: true }) }}
         </div>
     </div>
+
+    <script>
+        $(function() {
+            let form = $(".form-toolForm");
+
+            $( ".add-tool" ).click(function() {
+                form.attr('action', $(this).data('action'));
+            });
+        });
+    </script>
 {% endmacro %}

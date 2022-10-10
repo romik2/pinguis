@@ -16,7 +16,7 @@ use App\Entity\Tool;
 class ToolController extends AbstractController
 {
     /**
-     * @Route("/", name="dashboard_tool")
+     * @Route("/", name="dashboard_tool", methods={"GET"})
      */
     public function listTool(): Response
     {
@@ -27,18 +27,18 @@ class ToolController extends AbstractController
     }
 
     /**
-     * @Route("/details/{id}", name="details_tool")
+     * @Route("/details", name="details_tool", methods={"GET"})
      */
     public function details(Request $request): Response
     {
         $tool = $this->getDoctrine()->getRepository(Tool::class)->find($request->get('id'));
         return new JsonResponse([
-            'content' => $this->render('tool/index.html.twig', ['tools' => []])->getContent(),
+            'content' => $this->render('tool/details.html.twig', ['tool' => $tool])->getContent(),
         ]);
     }
 
     /**
-     * @Route("/add", name="add_tool")
+     * @Route("/add", name="add_tool", methods={"POST"})
      */
     public function addTool(Request $request): Response
     {
@@ -51,7 +51,7 @@ class ToolController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="edit_tool")
+     * @Route("/edit/{id}", name="edit_tool", methods={"POST"})
      */
     public function editTool(Request $request, Tool $tool): Response
     {

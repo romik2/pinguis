@@ -101,6 +101,12 @@ class Tool
 
     public function getToolStatusesLimit(int $limit): array
     {
-        return array_slice($this->toolStatuses->toArray(), $limit);
+        return array_reverse(array_slice(array_reverse($this->toolStatuses->toArray()), 0, $limit));
+    }
+
+    public function getStatus()
+    {
+        $status = $this->toolStatuses->toArray();
+        return end($status)->getStatus();
     }
 }

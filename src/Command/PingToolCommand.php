@@ -67,7 +67,7 @@ class PingToolCommand extends Command
     {
         $status = $this->managerRegistry->getRepository(Status::class)->findOneBy(['service' => $pingStatus]);
         
-        if ($status->getId() != $tool->getStatus()->getId()) {
+        if (empty($tool->getStatus()) || $status->getId() != $tool->getStatus()->getId()) {
             $paramsSendMessages[] = [
                 'chat_id' => $tool->getUser()->getTelegramChatId(),
                 'text' => "Устройство {$tool->getName()} было {$status->getName()}"

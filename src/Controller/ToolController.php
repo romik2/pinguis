@@ -31,7 +31,7 @@ class ToolController extends AbstractController
      */
     public function details(Request $request): Response
     {
-        $tool = $this->getDoctrine()->getRepository(Tool::class)->find($request->get('id'));
+        $tool = $this->getDoctrine()->getRepository(Tool::class)->find($request->query->get('id'));
         return new JsonResponse([
             'content' => $this->render('tool/details.html.twig', ['tool' => $tool])->getContent(),
         ]);

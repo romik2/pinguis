@@ -112,7 +112,9 @@ class Tool
     public function getStatus()
     {
         $status = $this->toolStatuses->toArray();
-        return end($status)->getStatus();
+        if (end($status)) {
+            return end($status)->getStatus();
+        }
     }
 
     public function getUser(): ?User

@@ -58,10 +58,10 @@
         </div>
     </div>
 </div>
-<div class="col-8" id="loaderDetails" hidden>
+<div class="col-12 col-lg-8" id="loaderDetails" hidden>
    <center><div class="lds-dual-ring"></div></center>
 </div>
-<div class="col-8" id="detailsTool" hidden>
+<div class="col-12 col-lg-8" id="detailsTool" hidden>
    
 </div>
 </div>
@@ -71,7 +71,7 @@
         let idTool;
 
         $(".details-view").click(function() {
-            $("#listTool").removeClass('col-12').addClass('col-4');
+            $("#listTool").addClass('col-lg-4');
             $("#detailsTool").attr('hidden', true);
             $("#loaderDetails").removeAttr('hidden');
             idTool = $(this).data('id');

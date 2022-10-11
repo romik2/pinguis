@@ -16,18 +16,18 @@ use App\Entity\Tool;
 class ToolController extends AbstractController
 {
     /**
-     * @Route("/", name="dashboard_tool", methods={"GET"})
+     * @Route("/", name="dashboard_tool")
      */
     public function listTool(): Response
     {
-        $tools = $this->getDoctrine()->getRepository(Tool::class)->findAll();
+        $tools = $this->getDoctrine()->getRepository(Tool::class)->findBy(['user' => $this->getUser()]);
         return $this->render('tool/index.html.twig', [
             'tools' => $tools,
         ]);
     }
 
     /**
-     * @Route("/details", name="details_tool")
+     * @Route("/details", name="details_tool", methods={"POST"})
      */
     public function details(Request $request): Response
     {
@@ -44,7 +44,7 @@ class ToolController extends AbstractController
     {
         $toolDetails = $request->get('tool');
         $tool = new Tool();
-        $tool->setAddress($toolDetails['address'])->setName($toolDetails['name']);
+        $tool->setAddress($toolDetails['address'])->setName($toolDetails['name'])->setUser($this->getUser());
         $this->getDoctrine()->getManager()->persist($tool);
         $this->getDoctrine()->getManager()->flush();
         return $this->redirect($request->headers->get('referer'));

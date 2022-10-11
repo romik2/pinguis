@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $telegramChatId;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Tool::class, mappedBy="user")
+     */
+    private $tools;
+
+    public function __construct()
+    {
+        $this->tools = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -117,5 +134,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getTelegramChatId(): ?int
+    {
+        return $this->telegramChatId;
+    }
+
+    public function setTelegramChatId(?int $telegramChatId): self
+    {
+        $this->telegramChatId = $telegramChatId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tool>
+     */
+    public function getTools(): Collection
+    {
+        return $this->tools;
+    }
+
+    public function addTool(Tool $tool): self
+    {
+        if (!$this->tools->contains($tool)) {
+            $this->tools[] = $tool;
+            $tool->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTool(Tool $tool): self
+    {
+        if ($this->tools->removeElement($tool)) {
+            // set the owning side to null (unless already changed)
+            if ($tool->getUser() === $this) {
+                $tool->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -27,11 +27,11 @@ class ToolController extends AbstractController
     }
 
     /**
-     * @Route("/details", name="details_tool", methods={"GET"})
+     * @Route("/details", name="details_tool")
      */
     public function details(Request $request): Response
     {
-        $tool = $this->getDoctrine()->getRepository(Tool::class)->find($request->query->get('id'));
+        $tool = $this->getDoctrine()->getRepository(Tool::class)->find($request->get('id'));
         return new JsonResponse([
             'content' => $this->render('tool/details.html.twig', ['tool' => $tool])->getContent(),
         ]);

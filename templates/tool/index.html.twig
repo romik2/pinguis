@@ -90,6 +90,7 @@
         $.ajax({
             url: '{{ path('details_tool') }}',
             data: {id},
+            method: "POST",
             success: function (data) {
                 $("#detailsTool").html(data.content);
                 $("#detailsTool").removeAttr('hidden');

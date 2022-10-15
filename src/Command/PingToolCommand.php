@@ -48,6 +48,7 @@ class PingToolCommand extends Command
         /** @var Tool $tool */
         foreach ($tools as $tool) {
             $io->info("Tool {$tool->getName()}");
+            $output = "";
             exec("ping -c 3 {$tool->getAddress()}", $output, $result);
             list($toolStatus, $paramsSendMessages) = $this->buildToolStatus($tool, $result == 0, $paramsSendMessages);
             $this->entityManager->persist($toolStatus);

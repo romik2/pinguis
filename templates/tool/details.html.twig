@@ -6,8 +6,23 @@
             </div>
             <div class="col-auto">
                 <div class="card-header-action">
-                    {# <button type="button" class="btn edit-tool btn-primary" data-action="{{ path('edit_tool', {id: tool.id}) }}" data-toggle="modal" data-target="#toolForm">{{ 'Edit' | trans }}</button> #}
-                    {# <button type="button" class="btn add-tool btn-danger" data-action="{{ path('edit_tool', {id: tool.id}) }}" data-toggle="modal" data-target="#toolForm">{{ 'Delete' | trans }}</button> #}
+                    <button type="button" class="btn edit-tool btn-primary"
+                    data-action="{{ path('edit_tool', {id: tool.id}) }}" 
+                    data-name="{{ tool.name }}" 
+                    data-address="{{ tool.address }}" 
+                    data-type="{{ tool.type.id }}" 
+                    data-toggle="modal" data-target="#toolForm">{{ 'Edit' | trans }}</button>
+                    {% if not tool.deleted %}
+                        <button type="button" class="btn prompt btn-danger" 
+                        data-action="{{ path('delete_tool', {id: tool.id}) }}"
+                        data-text="{{ "Are you sure you want to remove the tool" | trans ~ "?" }}" 
+                        data-toggle="modal" data-target="#promptForm">{{ 'Delete' | trans }}</button>
+                    {% else %}
+                        <button type="button" class="btn prompt btn-success" 
+                        data-action="{{ path('undelete_tool', {id: tool.id}) }}"
+                        data-text="{{ "Are you sure you want to restore the tool" | trans ~ "?" }}" 
+                        data-toggle="modal" data-target="#promptForm">{{ 'Restore' | trans }}</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -32,3 +47,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function() {
+        let formPrompt = $(".form-promptForm");
+        let formTool = $(".form-toolForm");
+
+        $( ".edit-tool" ).click(function() {
+            formTool.attr('action', $(this).data('action'));
+            formTool.find(".tool-name").val($(this).data('name'));
+            formTool.find(".tool-type").val($(this).data('type'));
+            formTool.find(".tool-address").val($(this).data('address'));
+        });
+
+        $( ".prompt" ).click(function() {
+            formPrompt.attr('action', $(this).data('action'));
+            formPrompt.find(".prompt-text").html($(this).data('text'));
+        });
+    });
+</script>

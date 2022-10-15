@@ -1,31 +1,42 @@
-{% macro inputs() %}
+{% macro inputs(toolTypes = []) %}
     {% import 'fields/text.html.twig' as fieldText %}
-    {# {% import 'fields/select.html.twig' as fieldSelect %}
+    {% import 'fields/select.html.twig' as fieldSelect %}
 
-    <div class="row form-group">
-        <div class="col-12">
-            {{ fieldSelect.select('tool[name]', 'Name', { required: true }) }}
-        </div>
-    </div> #}
-
-    <div class="row form-group">
-        <div class="col-12">
-            {{ fieldText.text('tool[name]', 'Name', { required: true }) }}
+    <div class='row form-group'>
+        <div class='col-12'>
+            {{ fieldSelect.select('tool[type]', 'Type', {
+                class: 'tool-type',
+                required: true,
+                value: toolTypes | map(type => {key: type.id, value: type.name }),
+            }) }}
         </div>
     </div>
 
-    <div class="row form-group">
-        <div class="col-12">
-            {{ fieldText.text('tool[address]', 'Address', { required: true }) }}
+    <div class='row form-group'>
+        <div class='col-12'>
+            {{ fieldText.text('tool[name]', 'Name', { class: 'tool-name', required: true }) }}
+        </div>
+    </div>
+
+    <div class='row form-group'>
+        <div class='col-12'>
+            {{ fieldText.text('tool[address]', 'Address', { class: 'tool-address', required: true }) }}
         </div>
     </div>
 
     <script>
         $(function() {
-            let form = $(".form-toolForm");
+            let form = $('.form-toolForm');
 
-            $( ".add-tool" ).click(function() {
+            $( '.add-tool' ).click(function() {
                 form.attr('action', $(this).data('action'));
+            });
+
+            $( '.edit-tool' ).click(function() {
+                form.attr('action', $(this).data('action'));
+                form.find('.tool-name').val($(this).data('name'));
+                form.find('.tool-type').val($(this).data('type'));
+                form.find('.tool-address').val($(this).data('address'));
             });
         });
     </script>

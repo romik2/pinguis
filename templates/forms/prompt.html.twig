@@ -1,0 +1,19 @@
+{% macro inputs() %}
+
+    <div class="row form-group">
+        <div class="col-12">
+           <center><p class="prompt-text"></p></center>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            let form = $(".form-promptForm");
+
+            $( ".prompt" ).click(function() {
+                form.attr('action', $(this).data('action'));
+                form.find(".prompt-text").html($(this).data('text'));
+            });
+        });
+    </script>
+{% endmacro %}

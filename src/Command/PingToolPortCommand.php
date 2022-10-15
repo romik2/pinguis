@@ -36,17 +36,18 @@ class PingToolPortCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $toolType = $this->managerRegistry->getRepository(ToolType::class)->findOneBy(['type' => 'ping_port']);
-        $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId()]);
+        $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId(), 'deleted' => false]);
         $waitTimeoutInSeconds = 1;
         $paramsSendMessages = [];
+        $countTool = 0;
 
         /** @var Tool $tool */
         foreach ($tools as $tool) {
             $io->info("Tool {$tool->getName()}");
-            $address = explode(":", $tool->getAddress());
-            dd($address);
+            list($address, $port) = explode(":", $tool->getAddress());
+
             try {
-                $fp = fsockopen($host,$port,$errCode,$errStr,$waitTimeoutInSeconds);
+                $fp = fsockopen($address, $port, $errCode, $errStr, $waitTimeoutInSeconds);
                 if($fp){   
                     list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, true, $paramsSendMessages);
                 } else {
@@ -54,9 +55,14 @@ class PingToolPortCommand extends Command
                 } 
                 fclose($fp);
             } catch (\Exception $ex) {
-                list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, false, $paramsSendMessages, "\n{$ex->getMessages()}");
+                list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, false, $paramsSendMessages, "\n{$ex->getMessage()}");
             }
             $this->entityManager->persist($toolStatus);
+
+            $countTool += 1;
+            if ($countTool % 4 == 0) {
+                $this->entityManager->flush();
+            }
         }
         
         $this->entityManager->flush();

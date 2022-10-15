@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\Tool;
 use App\Entity\ToolType;
-use App\Service\TelegramBot;
 use App\Service\ToolService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,14 +18,12 @@ class PingToolPortCommand extends Command
     protected static $defaultDescription = 'Ping tool port ip';
     private EntityManagerInterface $entityManager;
     private ManagerRegistry $managerRegistry;
-    private TelegramBot $telegramBot;
     private ToolService $toolService;
 
-    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry, TelegramBot $telegramBot, ToolService $toolService)
+    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry, ToolService $toolService)
     {
         $this->managerRegistry = $managerRegistry;
         $this->entityManager = $entityManager;
-        $this->telegramBot = $telegramBot;
         $this->toolService = $toolService;
 
         parent::__construct();
@@ -37,8 +34,8 @@ class PingToolPortCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $toolType = $this->managerRegistry->getRepository(ToolType::class)->findOneBy(['type' => 'ping_port']);
         $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId(), 'deleted' => false]);
+        unset($toolType);
         $waitTimeoutInSeconds = 1;
-        $paramsSendMessages = [];
         $countTool = 0;
 
         /** @var Tool $tool */
@@ -49,13 +46,13 @@ class PingToolPortCommand extends Command
             try {
                 $fp = fsockopen($address, $port, $errCode, $errStr, $waitTimeoutInSeconds);
                 if($fp){   
-                    list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, true, $paramsSendMessages);
+                    $toolStatus = $this->toolService->buildToolStatus($tool, true);
                 } else {
-                    list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, false, $paramsSendMessages, 'Error');
+                    $toolStatus = $this->toolService->buildToolStatus($tool, false, 'Error');
                 } 
                 fclose($fp);
             } catch (\Exception $ex) {
-                list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, false, $paramsSendMessages, "\n{$ex->getMessage()}");
+                $toolStatus = $this->toolService->buildToolStatus($tool, false, "\n{$ex->getMessage()}");
             }
             $this->entityManager->persist($toolStatus);
 
@@ -66,10 +63,6 @@ class PingToolPortCommand extends Command
         }
         
         $this->entityManager->flush();
-
-        foreach ($paramsSendMessages as $params) {
-            $this->telegramBot->sendMessages($params);
-        }
 
         $io->success('Command Success');
         

@@ -4,7 +4,6 @@ namespace App\Command;
 
 use App\Entity\Tool;
 use App\Entity\ToolType;
-use App\Service\TelegramBot;
 use App\Service\ToolService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,14 +18,12 @@ class PingToolCommand extends Command
     protected static $defaultDescription = 'Ping tool command by IP';
     private EntityManagerInterface $entityManager;
     private ManagerRegistry $managerRegistry;
-    private TelegramBot $telegramBot;
     private ToolService $toolService;
 
-    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry, TelegramBot $telegramBot, ToolService $toolService)
+    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry, ToolService $toolService)
     {
         $this->managerRegistry = $managerRegistry;
         $this->entityManager = $entityManager;
-        $this->telegramBot = $telegramBot;
         $this->toolService = $toolService;
 
         parent::__construct();
@@ -35,17 +32,17 @@ class PingToolCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $paramsSendMessages = [];
         $toolType = $this->managerRegistry->getRepository(ToolType::class)->findOneBy(['type' => 'command_ping']);
         $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId(), 'deleted' => false]);
+        unset($toolType);
         $countTool = 0;
 
         /** @var Tool $tool */
         foreach ($tools as $tool) {
             $io->info("Tool {$tool->getName()}");
-            $output = "";
             exec("ping -c 1 {$tool->getAddress()}", $output, $result);
-            list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, $result == 0, $paramsSendMessages, implode("\n", $output));
+            $toolStatus = $this->toolService->buildToolStatus($tool, $result == 0, implode("\n", $output));
+            unset($output);
             $this->entityManager->persist($toolStatus);
 
             $countTool += 1;
@@ -54,10 +51,6 @@ class PingToolCommand extends Command
             }
         }
         $this->entityManager->flush();
-
-        foreach ($paramsSendMessages as $params) {
-            $this->telegramBot->sendMessages($params);
-        }
 
         $io->success('Command Success');
 

@@ -39,6 +39,11 @@ class Tool
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ToolType::class, inversedBy="tools")
+     */
+    private $type;
+
     public function __construct()
     {
         $this->toolStatuses = new ArrayCollection();
@@ -125,6 +130,18 @@ class Tool
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getType(): ?ToolType
+    {
+        return $this->type;
+    }
+
+    public function setType(?ToolType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

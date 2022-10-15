@@ -39,6 +39,7 @@ class PingToolPortCommand extends Command
         $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId(), 'deleted' => false]);
         $waitTimeoutInSeconds = 1;
         $paramsSendMessages = [];
+        $countTool = 0;
 
         /** @var Tool $tool */
         foreach ($tools as $tool) {
@@ -57,8 +58,14 @@ class PingToolPortCommand extends Command
                 list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, false, $paramsSendMessages, "\n{$ex->getMessage()}");
             }
             $this->entityManager->persist($toolStatus);
-            $this->entityManager->flush();
+
+            $countTool += 1;
+            if ($countTool % 4 == 0) {
+                $this->entityManager->flush();
+            }
         }
+        
+        $this->entityManager->flush();
 
         foreach ($paramsSendMessages as $params) {
             $this->telegramBot->sendMessages($params);

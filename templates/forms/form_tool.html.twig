@@ -1,5 +1,12 @@
 {% macro inputs() %}
     {% import 'fields/text.html.twig' as fieldText %}
+    {# {% import 'fields/select.html.twig' as fieldSelect %}
+
+    <div class="row form-group">
+        <div class="col-12">
+            {{ fieldSelect.select('tool[name]', 'Name', { required: true }) }}
+        </div>
+    </div> #}
 
     <div class="row form-group">
         <div class="col-12">

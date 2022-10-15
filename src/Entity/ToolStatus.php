@@ -32,6 +32,11 @@ class ToolStatus
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $messages;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -86,6 +91,18 @@ class ToolStatus
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getMessages(): ?string
+    {
+        return $this->messages;
+    }
+
+    public function setMessages(?string $messages): self
+    {
+        $this->messages = $messages;
 
         return $this;
     }

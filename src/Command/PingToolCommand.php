@@ -48,7 +48,7 @@ class PingToolCommand extends Command
             list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, $result == 0, $paramsSendMessages, implode("\n", $output));
             $this->entityManager->persist($toolStatus);
             $countTool += 1;
-            if ($countTool / 4 == 0) {
+            if ($countTool % 4 == 0) {
                 $this->entityManager->flush();
             }
         }

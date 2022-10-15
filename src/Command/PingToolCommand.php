@@ -38,6 +38,7 @@ class PingToolCommand extends Command
         $paramsSendMessages = [];
         $toolType = $this->managerRegistry->getRepository(ToolType::class)->findOneBy(['type' => 'command_ping']);
         $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId(), 'deleted' => false]);
+        $countTool = 0;
 
         /** @var Tool $tool */
         foreach ($tools as $tool) {
@@ -46,8 +47,13 @@ class PingToolCommand extends Command
             exec("ping -c 1 {$tool->getAddress()}", $output, $result);
             list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, $result == 0, $paramsSendMessages, implode("\n", $output));
             $this->entityManager->persist($toolStatus);
-            $this->entityManager->flush();
+
+            $countTool += 1;
+            if ($countTool % 4 == 0) {
+                $this->entityManager->flush();
+            }
         }
+        $this->entityManager->flush();
 
         foreach ($paramsSendMessages as $params) {
             $this->telegramBot->sendMessages($params);

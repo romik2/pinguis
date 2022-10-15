@@ -1,41 +1,30 @@
 {% macro select(name, title, options) %}
     {% set isRequired = options.required is defined and options.required == true %}
-    {% set isReadonly = options.readonly is defined and options.readonly == true %}
     {% set isDisabled = options.disabled is defined and options.disabled == true %}
     {% set isHidden = options.hidden is defined and options.hidden == true %}
     {% set isMultiple = options.multiple is defined and options.multiple == true %}
-    {% set fieldId = _self._fieldId(title) %}
 
     {% set init = options.init is not defined or options.init == true %}
     
-    {{ _self._label(fieldId, title, options) }}
+    {{ _self.label(title, options) }}
 
     <select 
-        class="form-control {{ init ? 'select2-modal' }} {{ options.class ?? '' }}"
+        class="form-control {{ options.class ?? '' }}"
         name="{{ name }}"
-        data-value="{{ options.fieldValue ?? '' }}"
-        data-readonly="true"
-        {% if options.placeholder is defined %}
-            data-placeholder="{{ options.placeholder | trans }}"
-        {% endif %}
         {{ isRequired ? 'required' }}
         {{ isDisabled ? 'disabled' }}
         {{ isHidden ? 'hidden' }}
         {{ isMultiple ? 'multiple' }}
-        {{ isReadonly ? 'readonly' }}
-        {% if options.defaultValue is defined %}
-            data-default-value="{{options.defaultValue}}"
-        {% endif %}
     >
         {% if options.placeholder is defined and not isMultiple %}<option></option>{% endif %}
         {% if options.value is defined %}
             {% for option in options.value %}
-                {{ _self._selectOption(option) }}
+                <option value="{{ option.key }}">
+                    {{ option.value }}
+                </option>
             {% endfor %}
         {% endif %}
     </select>
-
-    {{ _self._invalidFeedback(fieldId) }}
 {% endmacro select %}
 
 {% macro label(title, options, class = null) %}
@@ -75,3 +64,4 @@
         {% endfor %}
     {% endif %}
 {% endmacro %}
+

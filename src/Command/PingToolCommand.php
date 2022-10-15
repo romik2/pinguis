@@ -37,9 +37,9 @@ class PingToolCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $paramsSendMessages = [];
         $toolType = $this->managerRegistry->getRepository(ToolType::class)->findOneBy(['type' => 'command_ping']);
-        $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId()]);
-
+        $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId(), 'deleted' => false]);
         $countTool = 0;
+
         /** @var Tool $tool */
         foreach ($tools as $tool) {
             $io->info("Tool {$tool->getName()}");
@@ -47,6 +47,7 @@ class PingToolCommand extends Command
             exec("ping -c 1 {$tool->getAddress()}", $output, $result);
             list($toolStatus, $paramsSendMessages) = $this->toolService->buildToolStatus($tool, $result == 0, $paramsSendMessages, implode("\n", $output));
             $this->entityManager->persist($toolStatus);
+
             $countTool += 1;
             if ($countTool % 4 == 0) {
                 $this->entityManager->flush();

@@ -20,7 +20,7 @@ class Tool
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=15)
+     * @ORM\Column(type="string", length=30)
      */
     private $address;
 
@@ -43,6 +43,11 @@ class Tool
      * @ORM\ManyToOne(targetEntity=ToolType::class, inversedBy="tools")
      */
     private $type;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $deleted = false;
 
     public function __construct()
     {
@@ -142,6 +147,18 @@ class Tool
     public function setType(?ToolType $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function isDeleted(): ?bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleted): self
+    {
+        $this->deleted = $deleted;
 
         return $this;
     }

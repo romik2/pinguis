@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-buster
+FROM php:7.4-fpm-buster
 ARG TIMEZONE
 
 COPY php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
@@ -33,4 +33,6 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+RUN curl -sS https://get.symfony.com/cli/installer | bash
 WORKDIR /var/www/pinguis
+RUN composer --help

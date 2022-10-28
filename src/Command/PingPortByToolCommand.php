@@ -8,6 +8,7 @@ use App\Service\ToolService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -44,7 +45,7 @@ class PingPortByToolCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $waitTimeoutInSeconds = 45;
         $countTool = 0;
-        $tool = $this->managerRegistry->getRepository(Tool::class)->findBy($input->getArgument('toolId'));
+        $tool = $this->managerRegistry->getRepository(Tool::class)->find($input->getArgument('toolId'));
 
         $io->info("Tool {$tool->getName()}");
         list($address, $port) = explode(":", $tool->getAddress());

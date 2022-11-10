@@ -17,7 +17,8 @@ services:
 ###> php:7.4-fpm ###
   php:
     container_name: php
-    image: php:7.4-fpm
+    build:
+      context: .
     volumes:
       - ./:/app
     ports:

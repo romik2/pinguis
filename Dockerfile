@@ -4,6 +4,7 @@ ARG TIMEZONE
 COPY conf/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
 
 RUN apt-get update && apt-get install -y \
+    cron \
     gnupg \
     g++ \
     procps \
@@ -31,9 +32,8 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
     && printf '[PHP]\ndate.timezone = "%s"\n', ${TIMEZONE} > /usr/local/etc/php/conf.d/tzone.ini \
     && "date"
 
-RUN curl -sS https://getcomposer.org/installer | php -- \
---install-dir=/usr/bin --filename=composer
-
-COPY . /var/www/pinguis
-
-RUN cd /var/www/pinguis && /usr/bin/composer install
+COPY . /app
+EXPOSE 9000
+RUN echo "* * * * * root php /app/bin/console app:ping-tool >> /app/cron.log 2>&1" >> /etc/crontab
+RUN echo "* * * * * root php /app/bin/console app:ping-tool-port >> /app/cron.log 2>&1" >> /etc/crontab
+CMD bash -c "cron && php-fpm && tail -f /app/cron.log"

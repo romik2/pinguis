@@ -40,7 +40,9 @@
                         {% endfor %}
                     </div>
                     <div class="col-4">
-                        <span class="float-end badge rounded-pill state-text" style="background: {{ tool.status.color }}">{{ tool.status.name }}</span>
+                        {% if tool.status is not null %}
+                            <span class="float-end badge rounded-pill state-text" style="background: {{ tool.status.color }}">{{ tool.status.name }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>

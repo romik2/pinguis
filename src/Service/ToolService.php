@@ -22,7 +22,7 @@ class ToolService
     public function buildToolStatus(Tool $tool, bool $pingStatus = false, $messages = ""): ToolStatus
     {
         $status = $this->managerRegistry->getRepository(Status::class)->findOneBy(['service' => $pingStatus]);
-        if (empty($tool->getStatus()) || $status->getId() != $tool->getStatus()->getId()) {
+        if (empty($tool->getStatus()) || $status->getId() != $tool->getStatus()->getId() and !empty($tool->getUser()->getTelegramChatId())) {
             $this->telegramBot->sendMessages([
                 'chat_id' => $tool->getUser()->getTelegramChatId(),
                 'text' => "Устройство {$tool->getName()} было {$status->getName()}"

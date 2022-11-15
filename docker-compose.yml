@@ -14,27 +14,6 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
 ###< doctrine/doctrine-bundle ###
-###> php:7.4-fpm ###
-  php:
-    container_name: php
-    build:
-      context: .
-    volumes:
-      - ./:/app
-    ports:
-      - '9000:9000'
-    depends_on:
-      - database
-      - composer
-###< php:7.4-fpm ###
-###> composer ###
-  composer:
-    container_name: composer
-    image: composer:2
-    command: composer install --ignore-platform-reqs
-    volumes:
-      - ./:/app
-###< composer ###
 ###> nginx ###
   nginx:
     container_name: nginx
@@ -49,3 +28,22 @@ services:
       - database
       - composer
 ###< nginx ###
+###> composer ###
+  composer:
+    container_name: composer
+    image: composer:2
+    command: composer install --ignore-platform-reqs
+    volumes:
+      - ./:/app
+###< composer ###
+###> php:7.4-fpm ###
+  php:
+    container_name: php
+    build:
+      context: .
+    ports:
+      - '9000:9000'
+    depends_on:
+      - database
+      - composer
+###< php:7.4-fpm ###

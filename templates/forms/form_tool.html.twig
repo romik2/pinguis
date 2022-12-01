@@ -14,13 +14,13 @@
 
     <div class='row form-group'>
         <div class='col-12'>
-            {{ fieldText.text('tool[name]', 'Name', { class: 'tool-name', required: true }) }}
+            {{ fieldText.text('tool[name]', 'Name' | trans, { class: 'tool-name', required: true }) }}
         </div>
     </div>
 
     <div class='row form-group'>
         <div class='col-12'>
-            {{ fieldText.text('tool[address]', 'Address', { class: 'tool-address', required: true }) }}
+            {{ fieldText.text('tool[address]', 'Address' | trans, { class: 'tool-address', required: true }) }}
         </div>
     </div>
 

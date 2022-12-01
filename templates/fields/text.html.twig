@@ -12,7 +12,7 @@
     {% set hidden = options.hidden is defined and options.hidden == true %}
 
     <label class="form-label form-label-title {{ class is not empty ? class ~ '-label' : '' }}" {{ hidden ? 'hidden' }}>
-        {{ title | trans | capitalize | raw }}
+        {{ title | capitalize | raw }}
         {% if required %}<span class="text-danger" {{ hidden ? 'hidden' }}>*</span>{% endif %}
     </label>
 {% endmacro %}
@@ -27,7 +27,7 @@
     class="form-control {{ options.class ?? '' }} {{ class }}"
     name="{{ name }}"
     value="{{ options.value ?? '' }}"
-    placeholder="{{ (options.placeholder ?? title) | trans | capitalize }}"
+    placeholder="{{ (options.placeholder ?? title) | capitalize }}"
     {{ isRequired ? 'required' }}
     {{ isReadonly ? 'readonly' }}
     {{ isDisabled ? 'disabled' }}

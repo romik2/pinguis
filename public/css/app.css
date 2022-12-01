@@ -1,0 +1,82 @@
+.form-group {
+    padding: 5px;
+}
+
+
+.beat, .beat-mobile {
+    border-radius: 25rem;
+    color: #fff;
+    display: inline-block;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    margin-right: 0.3em;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.beat-mobile {
+    padding: 0.9em 0.5em;
+}
+
+.beat {
+    padding: 2em 1em;
+}
+
+.badge {
+    box-shadow: none;
+}
+
+.rounded-pill {
+    border-radius: 50rem!important;
+}
+
+.state-text {
+    font-size: 30px!important;
+}
+
+.float-end {
+    float: right!important;
+}
+
+a.details-view {
+    color: #0d6efd!important;
+    text-decoration: underline!important;
+    cursor: pointer;
+}
+
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border-color: #000 transparent #000 transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.dropdown-toggle {
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    text-decoration: none;
+}
+
+.nav-link {
+    color: #212529;
+}

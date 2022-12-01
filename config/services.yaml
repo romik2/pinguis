@@ -12,7 +12,6 @@ services:
         autoconfigure: true
         public: true
         bind:
-            $telegramToken: '%env(APP_TELEGRAM_TOKEN)%'
             $projectDir: '%kernel.project_dir%'
 
     # makes classes in src/ available to be used as services

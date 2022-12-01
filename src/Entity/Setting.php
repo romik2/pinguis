@@ -23,9 +23,14 @@ class Setting
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $value;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nameProgramm;
 
     public function getId(): ?int
     {
@@ -52,6 +57,18 @@ class Setting
     public function setValue(string $value): self
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getNameProgramm(): ?string
+    {
+        return $this->nameProgramm;
+    }
+
+    public function setNameProgramm(string $nameProgramm): self
+    {
+        $this->nameProgramm = $nameProgramm;
 
         return $this;
     }

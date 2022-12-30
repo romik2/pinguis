@@ -34,6 +34,11 @@ class ToolType
      */
     private $tools;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $command;
+
     public function __construct()
     {
         $this->tools = new ArrayCollection();
@@ -94,6 +99,18 @@ class ToolType
                 $tool->setType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCommand(): ?string
+    {
+        return $this->command;
+    }
+
+    public function setCommand(?string $command): self
+    {
+        $this->command = $command;
 
         return $this;
     }

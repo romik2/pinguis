@@ -12,7 +12,7 @@
                 <tr>
                     <td><a class="details-view" data-id={{tool.id}}>{{ tool.name }}</a></td>
                     <td class="stat-cell">
-                    {% if toolStatuses[tool.id] is not empty %}
+                    {% if toolStatuses[tool.id] is defined %}
                         {% for statusTool in toolStatuses[tool.id] %}
                             <div class="beat-mobile" style="background: {{ statusTool.status.color }}"></div>
                         {% endfor %}

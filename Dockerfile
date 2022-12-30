@@ -35,6 +35,5 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
 
 COPY . /app
 EXPOSE 9000
-RUN echo "* * * * * root php /app/bin/console app:ping-tool >> /app/cron.log 2>&1" >> /etc/crontab
-RUN echo "* * * * * root php /app/bin/console app:ping-tool-port >> /app/cron.log 2>&1" >> /etc/crontab
+RUN echo "* * * * * root php /app/bin/console app:ping-tool-all >> /app/cron.log 2>&1" >> /etc/crontab
 CMD bash -c "cron && php-fpm && tail -f /app/cron.log"

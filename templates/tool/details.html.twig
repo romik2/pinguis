@@ -34,7 +34,7 @@
             </div>
             <div class="col-12">
                 <div class="row">
-                    {% if toolStatuses[tool.id] is not empty %}
+                    {% if toolStatuses[tool.id] is defined %}
                         <div class="col-8">
                             {% for statusTool in toolStatuses[tool.id] %}
                                 <div class="beat" title="{{ (statusTool.createdAt | date("d.m.Y H:i")) ~ "\n" ~ statusTool.messages }}" style="background: {{ statusTool.status.color }}"></div>

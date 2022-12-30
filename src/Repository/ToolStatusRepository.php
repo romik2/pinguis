@@ -39,28 +39,30 @@ class ToolStatusRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return ToolStatus[] Returns an array of ToolStatus objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getToolsStatus(array $tools, $limit = 1): array
+    {
+        $qb = $this->createQueryBuilder('ts');
+        $toolsIds = [];
+        $startAt = new \DateTime();
+        $endAt = (clone $startAt)->modify("-{$limit}minute");
 
-//    public function findOneBySomeField($value): ?ToolStatus
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        foreach ($tools as $tool) {
+            $toolsIds[] = $tool->getId();
+        }
+
+        $qb
+            ->select('ts')
+            ->andWhere($qb->expr()->in('ts.tool', ':toolId'))
+            ->setParameter('toolId', $toolsIds)
+            ->andWhere($qb->expr()->between('ts.createdAt', ':endAt', ':startAt'))
+            ->setParameter('startAt', $startAt)
+            ->setParameter('endAt', $endAt);
+
+        $result = [];
+        foreach ($qb->getQuery()->getResult() as $toolStatus) {
+            $result[$toolStatus->getTool()->getId()][] = $toolStatus;
+        }
+
+        return $result;
+    }
 }

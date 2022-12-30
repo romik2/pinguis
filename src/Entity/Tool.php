@@ -113,7 +113,6 @@ class Tool
         return $this;
     }
 
-
     public function getToolStatusesLimit(int $limit): array
     {
         return array_reverse(array_slice(array_reverse($this->toolStatuses->toArray()), 0, $limit));

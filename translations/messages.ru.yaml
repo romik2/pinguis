@@ -27,3 +27,7 @@ Monitoring tool: Мониторинг оборудованияя
 FirstName: Имя
 LastName: Фамилия
 idTelegramChat: Идентификатор телеграмм (ID)
+ROLE_ADMIN: Администратор
+ROLE_USER: Пользователь
+Role: Роль
+Tool not found: Не найдено оборудование

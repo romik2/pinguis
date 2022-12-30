@@ -34,16 +34,17 @@
             </div>
             <div class="col-12">
                 <div class="row">
-                    <div class="col-8">
-                        {% for statusTool in tool.getToolStatusesLimit(20) %}
-                            <div class="beat" title="{{ (statusTool.createdAt | date("d.m.Y H:i")) ~ "\n" ~ statusTool.messages }}" style="background: {{ statusTool.status.color }}"></div>
-                        {% endfor %}
-                    </div>
-                    <div class="col-4">
-                        {% if tool.status is not null %}
-                            <span class="float-end badge rounded-pill state-text" style="background: {{ tool.status.color }}">{{ tool.status.name }}</span>
-                        {% endif %}
-                    </div>
+                    {% if toolStatuses[tool.id] is not empty %}
+                        <div class="col-8">
+                            {% for statusTool in toolStatuses[tool.id] %}
+                                <div class="beat" title="{{ (statusTool.createdAt | date("d.m.Y H:i")) ~ "\n" ~ statusTool.messages }}" style="background: {{ statusTool.status.color }}"></div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-4">
+                            {% set toolStatusEnd = (toolStatuses[tool.id]) | last %}
+                            <span class="float-end badge rounded-pill state-text" style="background: {{ toolStatusEnd.status.color }}">{{ toolStatusEnd.status.name }}</span>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

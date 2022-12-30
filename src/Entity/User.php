@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=180, nullable=true)
      */
-    private $telegramChatId;
+    private $telegramChatId = '';
 
     /**
      * @ORM\OneToMany(targetEntity=Tool::class, mappedBy="user")
@@ -50,12 +50,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $firstname;
+    private $firstname = '';
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $lastname;
+    private $lastname = '';
 
     public function __construct()
     {

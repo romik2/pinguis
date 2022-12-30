@@ -79,12 +79,12 @@ class Status
         return $this;
     }
 
-    public function isService(): ?boolean
+    public function isService(): ?bool
     {
         return $this->service;
     }
 
-    public function setService(boolean $service): self
+    public function setService(bool $service): self
     {
         $this->service = $service;
 

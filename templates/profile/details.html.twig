@@ -25,15 +25,15 @@
                         <div class="col-12">
                             <div class='row form-group'>
                                 <div class='col-6'>
-                                    {{ fieldText.text('user[firstName]', 'FirstName' | trans, { required: true, value: user.firstname }) }}
+                                    {{ fieldText.text('userDetails[firstName]', 'FirstName' | trans, { required: true, value: user.firstname }) }}
                                 </div>
                                 <div class='col-6'>
-                                    {{ fieldText.text('user[lastName]', 'LastName' | trans, { required: true, value: user.lastname }) }}
+                                    {{ fieldText.text('userDetails[lastName]', 'LastName' | trans, { required: true, value: user.lastname }) }}
                                 </div>
                             </div>
                             <div class='row form-group'>
                                 <div class='col-6'>
-                                    {{ fieldText.text('user[telegramChatId]', 'idTelegramChat' | trans, { type: 'number', value: user.telegramChatId }) }}
+                                    {{ fieldText.text('userDetails[telegramChatId]', 'idTelegramChat' | trans, { value: user.telegramChatId }) }}
                                 </div>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <div class='col-6'>

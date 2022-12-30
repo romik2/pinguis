@@ -44,11 +44,11 @@ class ProfileController extends AbstractController
      */
     public function editProfile(Request $request, User $user, ManagerRegistry $doctrine): Response
     {
-        if ($this->getUser()->getId() != $user->getId() || !in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
+        if ($this->getUser()->getId() != $user->getId() && !in_array("ROLE_ADMIN", $this->getUser()->getRoles())) {
             return $this->redirectToRoute('dashboard');
         }
 
-        foreach ($request->get('user') as $userFieldKey => $userField) {
+        foreach ($request->get('userDetails') as $userFieldKey => $userField) {
             $name = lcfirst($userFieldKey);
             $function = "set$name";
             $user->$function($userField);

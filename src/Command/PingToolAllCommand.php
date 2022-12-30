@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class PingToolPortCommand extends Command
+class PingToolAllCommand extends Command
 {
     protected static $defaultName = 'app:ping-tool-all';
     protected static $defaultDescription = 'Add a short description for your command';

@@ -21,8 +21,8 @@ final class Version20221230093010 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE tool_type ADD command VARCHAR(255) DEFAULT NULL');
-        $this->addSql('UPDATE tool_type SET command = "app:ping-tool-port-by-id" WHERE id = 1');
-        $this->addSql('UPDATE tool_type SET command = "app:ping-tool-by-id" WHERE id = 2');
+        $this->addSql('UPDATE tool_type SET command = "app:ping-tool-by-id" WHERE id = 1');
+        $this->addSql('UPDATE tool_type SET command = "app:ping-tool-port-by-id" WHERE id = 2');
     }
 
     public function down(Schema $schema): void

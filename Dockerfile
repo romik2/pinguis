@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev  \
     libonig-dev \
     libxslt1-dev \
+    iputils-ping \
     acl \
     && echo 'alias sf="php bin/console"' >> ~/.bashrc
 

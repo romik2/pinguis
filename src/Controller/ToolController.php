@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Tool;
 use App\Entity\ToolType;
+use App\Entity\ToolStatus;
 
 /**
  * @Route("/tools")
@@ -20,22 +21,43 @@ class ToolController extends AbstractController
     /**
      * @Route("/", name="dashboard_tool")
      */
-    public function listTool(Request $request, ManagerRegistry $doctrine): Response
+    public function dashboard(Request $request, ManagerRegistry $doctrine): Response
     {
-        $filters = $request->get('filters');
+        $filters = $request->get('filters', ['deleted' => false]);
         if (!empty($filters['deleted'])) {
             $filters = ['deleted' => true];
-        } else {
-            $filters = ['deleted' => false];
         }
-        $tools = $doctrine->getRepository(Tool::class)->findBy(array_merge(['user' => $this->getUser()], $filters));
+
         $toolTypes = $doctrine->getRepository(ToolType::class)->findAll();
 
         return $this->render('tool/index.html.twig', [
-            'tools' => $tools,
             'filters' => $filters,
             'toolTypes' => $toolTypes,
         ]);
+    }
+
+    /**
+     * @Route("/list", name="list_tool")
+     */
+    public function list(Request $request, ManagerRegistry $doctrine): Response
+    {
+        try {
+            $filters = $request->get('filters', ['deleted' => false]);
+            if (!empty($filters['deleted'])) {
+                $filters = ['deleted' => true];
+            }
+    
+            $tools = $doctrine->getRepository(Tool::class)->findBy(array_merge(['user' => $this->getUser()], $filters));
+            $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus($tools, 10);
+
+            return new JsonResponse([
+                'content' => $this->render('tool/list.html.twig', ['tools' => $tools, 'toolStatuses' => $toolStatuses])->getContent(),
+            ]);
+        } catch (Exception $ex) {
+            return new JsonResponse([
+                'error' => $ex->getMessages(),
+            ]);
+        }
     }
 
     /**
@@ -44,8 +66,10 @@ class ToolController extends AbstractController
     public function details(Request $request, ManagerRegistry $doctrine): Response
     {
         $tool = $doctrine->getRepository(Tool::class)->find($request->get('id'));
+        $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus([$tool], 20);
+
         return new JsonResponse([
-            'content' => $this->render('tool/details.html.twig', ['tool' => $tool])->getContent(),
+            'content' => $this->render('tool/details.html.twig', ['tool' => $tool, 'toolStatuses' => $toolStatuses])->getContent(),
         ]);
     }
 

@@ -43,7 +43,6 @@ class PingToolCommand extends Command
         $tool = $this->managerRegistry->getRepository(Tool::class)->find($input->getArgument('toolId'));
 
         $io->info("Tool {$tool->getName()}");
-        list($address, $port) = explode(":", $tool->getAddress());
 
         try {
             exec("ping -c 1 {$tool->getAddress()}", $output, $result);

@@ -146,12 +146,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getTelegramChatId(): ?int
+    public function getTelegramChatId(): ?string
     {
         return $this->telegramChatId;
     }
 
-    public function setTelegramChatId(?int $telegramChatId): self
+    public function setTelegramChatId(?string $telegramChatId): self
     {
         $this->telegramChatId = $telegramChatId;
 

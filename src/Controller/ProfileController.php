@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 
 /**
- * @Route("/profile")
+ * @Route("/profile/")
  */
 class ProfileController extends AbstractController
 {
@@ -40,7 +40,7 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="profile_edit")
+     * @Route("{id}/edit", name="profile_edit")
      */
     public function editProfile(Request $request, User $user, ManagerRegistry $doctrine): Response
     {

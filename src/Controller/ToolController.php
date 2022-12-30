@@ -48,7 +48,7 @@ class ToolController extends AbstractController
             }
     
             $tools = $doctrine->getRepository(Tool::class)->findBy(array_merge(['user' => $this->getUser()], $filters));
-            $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus($tools, 10);
+            $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus($tools, 15);
 
             return new JsonResponse([
                 'content' => $this->render('tool/list.html.twig', ['tools' => $tools, 'toolStatuses' => $toolStatuses])->getContent(),
@@ -66,7 +66,7 @@ class ToolController extends AbstractController
     public function details(Request $request, ManagerRegistry $doctrine): Response
     {
         $tool = $doctrine->getRepository(Tool::class)->find($request->get('id'));
-        $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus([$tool], 20);
+        $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus([$tool], 30);
 
         return new JsonResponse([
             'content' => $this->render('tool/details.html.twig', ['tool' => $tool, 'toolStatuses' => $toolStatuses])->getContent(),

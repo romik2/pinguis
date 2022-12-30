@@ -1,0 +1,60 @@
+{% if tools is not empty %}
+    <table class="table table-borderless mb-0">
+        <thead>
+            <tr>
+                <th class="meta">{{ 'Name' | trans }}</th>
+                <th class="meta stat-cell">{{ 'Availability legend' | trans }}</th>
+                <th class="meta stat-cell">{{ 'Productivity' | trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tool in tools %}
+                <tr>
+                    <td><a class="details-view" data-id={{tool.id}}>{{ tool.name }}</a></td>
+                    <td class="stat-cell">
+                    {% if toolStatuses[tool.id] is not empty %}
+                        {% for statusTool in toolStatuses[tool.id] %}
+                            <div class="beat-mobile" style="background: {{ statusTool.status.color }}"></div>
+                        {% endfor %}
+                    {% endif %}
+                    </td>
+                    <td class="stat-cell">-</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>{{ "Tool not found" | trans }}</p>
+{% endif %}
+<script>
+ $(function() {
+        let idTool;
+
+        $(".details-view").click(function() {
+            $("#dashboardTool").addClass('col-lg-4');
+            $("#detailsTool").attr('hidden', true);
+            $("#loaderDetails").removeAttr('hidden');
+            idTool = $(this).data('id');
+            getDetailsTool(idTool);
+        });
+
+        setInterval( function () {
+            if (idTool) {
+                getDetailsTool(idTool);
+            }
+        }, 10000 );
+    });
+
+    function getDetailsTool(id) {
+        $.ajax({
+            url: '{{ path('details_tool') }}',
+            data: {id},
+            method: "POST",
+            success: function (data) {
+                $("#detailsTool").html(data.content);
+                $("#detailsTool").removeAttr('hidden');
+                $("#loaderDetails").attr('hidden', true);
+            }
+        });
+    }
+</script>

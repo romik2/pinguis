@@ -5,7 +5,6 @@ namespace App\Command;
 use App\Entity\Tool;
 use App\Entity\ToolType;
 use App\Service\ToolService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,14 +15,12 @@ class PingToolCommand extends Command
 {
     protected static $defaultName = 'app:ping-tool';
     protected static $defaultDescription = 'Ping tool command by IP';
-    private EntityManagerInterface $entityManager;
     private ManagerRegistry $managerRegistry;
     private ToolService $toolService;
 
-    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry, ToolService $toolService)
+    public function __construct(ManagerRegistry $managerRegistry, ToolService $toolService)
     {
         $this->managerRegistry = $managerRegistry;
-        $this->entityManager = $entityManager;
         $this->toolService = $toolService;
 
         parent::__construct();
@@ -38,19 +35,20 @@ class PingToolCommand extends Command
         $countTool = 0;
 
         /** @var Tool $tool */
-        foreach ($tools as $tool) {
+        foreach ($tools as $key => $tool) {
+            unset($tools[$key]);
+
             $io->info("Tool {$tool->getName()}");
             exec("ping -c 1 {$tool->getAddress()}", $output, $result);
             $toolStatus = $this->toolService->buildToolStatus($tool, $result == 0, implode("\n", $output));
-            unset($output);
-            $this->entityManager->persist($toolStatus);
+            $this->managerRegistry->getManager()->persist($toolStatus);
 
             $countTool += 1;
-            if ($countTool % 4 == 0) {
-                $this->entityManager->flush();
+            if ($countTool % 20 == 0) {
+                $this->managerRegistry->getManager()->flush();
             }
         }
-        $this->entityManager->flush();
+        $this->managerRegistry->getManager()->flush();
 
         $io->success('Command Success');
 

@@ -5,7 +5,6 @@ namespace App\Command;
 use App\Entity\Tool;
 use App\Entity\ToolType;
 use App\Service\ToolService;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,14 +16,12 @@ class PingPortByToolCommand extends Command
 {
     protected static $defaultName = 'app:ping-tool-port-by-id';
     protected static $defaultDescription = 'Ping tool port ip';
-    private EntityManagerInterface $entityManager;
     private ManagerRegistry $managerRegistry;
     private ToolService $toolService;
 
-    public function __construct(EntityManagerInterface $entityManager, ManagerRegistry $managerRegistry, ToolService $toolService)
+    public function __construct(ManagerRegistry $managerRegistry, ToolService $toolService)
     {
         $this->managerRegistry = $managerRegistry;
-        $this->entityManager = $entityManager;
         $this->toolService = $toolService;
 
         parent::__construct();
@@ -43,15 +40,13 @@ class PingPortByToolCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $waitTimeoutInSeconds = 45;
-        $countTool = 0;
         $tool = $this->managerRegistry->getRepository(Tool::class)->find($input->getArgument('toolId'));
 
         $io->info("Tool {$tool->getName()}");
         list($address, $port) = explode(":", $tool->getAddress());
 
         try {
-            $fp = fsockopen($address, $port, $errCode, $errStr, $waitTimeoutInSeconds);
+            $fp = fsockopen($address, $port, $errCode, $errStr, 45);
             if($fp){   
                 $toolStatus = $this->toolService->buildToolStatus($tool, true);
             } else {
@@ -61,15 +56,9 @@ class PingPortByToolCommand extends Command
         } catch (\Exception $ex) {
             $toolStatus = $this->toolService->buildToolStatus($tool, false, "\n{$ex->getMessage()}");
         }
-        $this->entityManager->persist($toolStatus);
 
-        $countTool += 1;
-        if ($countTool % 4 == 0) {
-            $this->entityManager->flush();
-        }
-        
-        
-        $this->entityManager->flush();
+        $this->managerRegistry->getManager()->persist($toolStatus);
+        $this->managerRegistry->getManager()->flush();
 
         $io->success('Command Success');
         

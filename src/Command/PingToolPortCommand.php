@@ -33,8 +33,9 @@ class PingToolPortCommand extends Command
         unset($toolType);
         
         /** @var Tool $tool */
-        foreach ($tools as $tool) {
+        foreach ($tools as $key => $tool) {
             exec("{$this->projectDir}/bin/console app:ping-tool-port-by-id {$tool->getId()}");
+            unset($tools[$key]);
         }
 
         return Command::SUCCESS;

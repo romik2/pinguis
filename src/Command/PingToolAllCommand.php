@@ -28,12 +28,11 @@ class PingToolAllCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $toolType = $this->managerRegistry->getRepository(ToolType::class)->findOneBy(['type' => 'ping_port']);
-        $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['type' => $toolType->getId(), 'deleted' => false]);
+        $tools = $this->managerRegistry->getRepository(Tool::class)->findBy(['deleted' => false]);
         
         /** @var Tool $tool */
         foreach ($tools as $key => $tool) {
-            exec("{$this->projectDir}/bin/console {$toolType->getCommand()} {$tool->getId()}");
+            exec("{$this->projectDir}/bin/console {$tool->getType()->getCommand()} {$tool->getId()}");
             unset($tools[$key]);
         }
 

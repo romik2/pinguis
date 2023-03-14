@@ -7,6 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ToolStatusRepository::class)
+ * @ORM\Table(name="tool_status",indexes={
+ *     @ORM\Index(name="search_idx", columns={"created_at"})
+ * })
  */
 class ToolStatus
 {
@@ -15,27 +18,27 @@ class ToolStatus
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Tool::class, inversedBy="toolStatuses")
      */
-    private $tool;
+    private Tool $tool;
 
     /**
      * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="toolStatuses")
      */
-    private $status;
+    private Status $status;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    private \DateTimeInterface $createdAt;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $messages;
+    private ?string $messages;
 
     public function __construct()
     {

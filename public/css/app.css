@@ -44,23 +44,34 @@ a.details-view {
     text-decoration: underline!important;
     cursor: pointer;
 }
-
-.lds-dual-ring {
-    display: inline-block;
-    width: 80px;
-    height: 80px;
+.lds-ring {
+   display: inline-block;
+   position: relative;
+   width: 64px;
+   height: 64px;
 }
-.lds-dual-ring:after {
-    content: " ";
+.lds-ring div {
+    box-sizing: border-box;
     display: block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
+    position: absolute;
+    width: 51px;
+    height: 51px;
+    margin: 6px;
+    border: 6px solid #cef;
     border-radius: 50%;
-    border-color: #000 transparent #000 transparent;
-    animation: lds-dual-ring 1.2s linear infinite;
+    animation: lds-ring 2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #0d6efd transparent transparent transparent;
 }
-@keyframes lds-dual-ring {
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+@keyframes lds-ring {
     0% {
         transform: rotate(0deg);
     }

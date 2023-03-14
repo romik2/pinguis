@@ -23,7 +23,7 @@ class ToolController extends AbstractController
      */
     public function dashboard(Request $request, ManagerRegistry $doctrine): Response
     {
-        $filters = $request->get('filters', ['deleted' => false]);
+        $filters = $request->request->get('filters', ['deleted' => false]);
         if (!empty($filters['deleted'])) {
             $filters = ['deleted' => true];
         }
@@ -42,26 +42,24 @@ class ToolController extends AbstractController
     public function list(Request $request, ManagerRegistry $doctrine): Response
     {
         try {
-            $filters = $request->get('filters', ['deleted' => false]);
-            if (!empty($filters['deleted'])) {
-                $filters = ['deleted' => true];
-            }
-    
+            $deleted = $request->request->get('deleted', false);
+            $filters['deleted'] = $deleted;
+            dump(array_merge(['user' => $this->getUser()], $filters));
             $tools = $doctrine->getRepository(Tool::class)->findBy(array_merge(['user' => $this->getUser()], $filters));
             $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus($tools, 15);
 
             return new JsonResponse([
                 'content' => $this->render('tool/list.html.twig', ['tools' => $tools, 'toolStatuses' => $toolStatuses])->getContent(),
             ]);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             return new JsonResponse([
-                'error' => $ex->getMessages(),
+                'error' => $ex->getMessage(),
             ]);
         }
     }
 
     /**
-     * @Route("/details", name="details_tool", methods={"POST"})
+     * @Route("/details", name="details_tool")
      */
     public function details(Request $request, ManagerRegistry $doctrine): Response
     {

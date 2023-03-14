@@ -41,7 +41,6 @@ class ToolStatusRepository extends ServiceEntityRepository
 
     public function getToolsStatus(array $tools, $limit = 1): array
     {
-        $qb = $this->createQueryBuilder('ts');
         $toolsIds = [];
         $startAt = new \DateTime();
         $endAt = (clone $startAt)->modify("-{$limit}minute");
@@ -49,10 +48,12 @@ class ToolStatusRepository extends ServiceEntityRepository
         foreach ($tools as $tool) {
             $toolsIds[] = $tool->getId();
         }
+        $qb = $this->createQueryBuilder('ts');
 
         $qb
-            ->select('ts')
-            ->andWhere($qb->expr()->in('ts.tool', ':toolId'))
+            ->select('ts, t')
+            ->leftJoin('ts.tool', 't')
+            ->andWhere($qb->expr()->in('t.id', ':toolId'))
             ->setParameter('toolId', $toolsIds)
             ->andWhere($qb->expr()->between('ts.createdAt', ':endAt', ':startAt'))
             ->setParameter('startAt', $startAt)

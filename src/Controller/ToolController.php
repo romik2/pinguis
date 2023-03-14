@@ -44,7 +44,6 @@ class ToolController extends AbstractController
         try {
             $deleted = $request->request->get('deleted', false);
             $filters['deleted'] = $deleted;
-            dump(array_merge(['user' => $this->getUser()], $filters));
             $tools = $doctrine->getRepository(Tool::class)->findBy(array_merge(['user' => $this->getUser()], $filters));
             $toolStatuses = $doctrine->getRepository(ToolStatus::class)->getToolsStatus($tools, 15);
 
